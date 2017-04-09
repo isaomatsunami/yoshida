@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Document Editor:{{ user.username }}</title>
+<link rel='stylesheet' href='{% static "toyama/stylesheets/style.css" %}'/>
+<link rel='stylesheet' href='{% static "toyama/stylesheets/jquery-ui.css" %}'/>
+<script src='{% static "toyama/javascripts/jquery-3.1.1.js" %}'></script>
+<script src='{% static "toyama/javascripts/jquery-ui.min.js" %}'></script>
+<script src='{% static "toyama/javascripts/underscore.js" %}'></script>
+<script src='{% static "toyama/javascripts/backbone.js" %}'></script>
+<script src='{% static "toyama/javascripts/d3.js" %}'></script>
+<script src='{% static "toyama/javascripts/imat.webapp.js" %}'></script>
+</head>
+<style>
+</style>
+<body>
+<div class="page">
+    <h2>List of PDFs</h2>
+    <ul>
+{% for pdf in pdfs %}
+        <li><a href="document/{{ pdf.pdfinfo.id }}">{{ pdf.pdfinfo.pdfname }}</a>({{ pdf.pdfinfo.numOfPages }})
+        <p>
+{% for page in pdf.pages %}
+            <a href="page/{{ page.id }}">{{ page.page }}</a>・
+{% endfor %}
+        </p>
+        </li>
+{% endfor %}
+	</ul>
+</div><!--============ end of page ==============-->
+<div id="webapp_top_fixed">
+  <div class="webapp_inner_fixed">
+    <div class="webapp_left_holder">
+      <ul class="webapp_menu_list">
+        <li><h3 id="title">Document Editor</h3></li>
+      </ul>
+    </div>
+    <div class="webapp_right_holder">
+      <ul class="webapp_menu_list">
+        <li class="extensible">
+          <img id="sync" src='{% static "yoshida/images/menu50.png" %}' width="25px" height="25px" style="float:left;margin:5px 5px;" />
+          <ul>
+            <li><a href="../accounts/logout">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div>{% csrf_token %}</div>
+</body>
+</html>

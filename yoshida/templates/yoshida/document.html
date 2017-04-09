@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Document Editor({{ user.username }})</title>
+<link rel='stylesheet' href='{% static "yoshida/stylesheets/jquery-ui.css" %}'/>
+<link rel='stylesheet' href='{% static "yoshida/stylesheets/ocr.base.css" %}'/>
+<script src='{% static "yoshida/javascripts/jquery-3.1.1.js" %}'></script>
+<script src='{% static "yoshida/javascripts/jquery-ui.min.js" %}'></script>
+<script src='{% static "yoshida/javascripts/underscore.js" %}'></script>
+<script src='{% static "yoshida/javascripts/backbone.js" %}'></script>
+<script src='{% static "yoshida/javascripts/d3.min.js" %}'></script>
+<script src='{% static "yoshida/javascripts/jscolor.min.js" %}'></script>
+<script src='{% static "yoshida/javascripts/imat.webapp.js" %}'></script>
+<script src='{% static "yoshida/javascripts/ocr.inline.js" %}'></script>
+</head>
+<style>
+</style>
+<body>
+<div class="page">
+  <div id="app" data-document={{ document_id }} />
+  <div style="margin:10px auto;"> double-clickで編集, dragで移動</div>
+</div><!--============ end of page ==============-->
+<div id="webapp_top_fixed">
+  <img id="sync" src='{% static "yoshida/images/sync.gif" %}' width="24px" height="24px" style="float:left;margin:5px 5px;" />
+  <div class="webapp_inner_fixed">
+    <div class="webapp_left_holder">
+      <h3><a href='../text/{{ pdfinfo.id }}'>{{ pdfinfo.pdfname }}</a></h3>
+    </div>
+    <div class="webapp_right_holder">
+      <ul class="webapp_menu_list">
+        <li><button id="replaceWordsAll">一括変換</button></li>
+        <li><button id="replaceWords">変換</button></li>
+        <li class="extensible">
+          <img id="sync" src='{% static "yoshida/images/q50.png" %}' width="25px" height="25px" style="float:left;margin:5px 5px;" />
+          <ul>
+            <li>
+              <p>/で囲まれた場合は正規表現として解釈されます。</p>
+            </li>
+            <li>
+              <label>行の背景色:
+                <input id="linecolor" class="jscolor" value="ffffff">
+              </label>
+            </li>
+            <li>
+              <a href="../accounts/logout">Logout</a>
+            </li>
+          </ul>
+        </li>
+        <li id="replaceFrom"><input id="inputReplaceFrom" type="text"></input></li>
+        <li id="replaceTo">
+          <label>→
+            <input id="inputReplaceTo" type="text"></input>
+          </label>
+        </li>
+        <li><button id="cleanAllLines">空白削除</button></li>
+        <li class="extensible" id="pagelink">
+          <h4>ページ移動</h4>
+          <ul>
+            <li><a href="../">目次へ戻る</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+<div id="webapp_bottom_fixed">
+  <div class="webapp_inner_fixed">
+    <div class="webapp_right_holder">
+      <ul class="webapp_menu_list">
+        <li><button id="removeLine">行削除</button></li>
+        <li><h4>文字を全部削除すれば行ごと削除</h4></li>
+        <li><button id="cleanLine">空白削除</button></li>
+        <li><button id="separateLine">行の分割</button></li>
+        <li><button id="cloneLine">行コピー</button></li>
+        <li id="changeFontSize">
+          <label>FontSize:
+            <input id="inputFontSize" type="number" step="0.5"></input>
+          </label>
+        </li>
+        <li id="changeLetterSpacing">
+          <label>LetterSpacing:
+            <input id="inputLetterSpacing" type="range" max="1" min="-1" step="0.1" style="width:15å0px"></input>
+          </label>
+        </li>
+        <li id="changeTextAlign">
+          <select id="inputTextAlign" name="align">
+            <option value="left">左揃え</option>
+            <option value="center">中央</option>
+            <option value="right">右揃え</option>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script id="line-template" type="text/template">
+  <span class="linetext"></span>
+  <input class="lineedit" type="text" value="" />
+</script>
+<div>{% csrf_token %}</div>
+</body>
+</html>
